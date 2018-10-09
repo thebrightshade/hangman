@@ -1,7 +1,8 @@
 #!/Users/skb/anaconda3/bin/python
 '''Hangman - You will have to guess the letters of a random word.
  You will be shown the number of letters the word has,
- each correct guess will populate the appropriate position for that letter in the word.
+ each correct guess will populate the appropriate position 
+ for that letter in the word.
  You will be allowed seven(7) wrong guesses, 
  once you exhaust the 7th wrong guess, you lose the game'''
 
@@ -34,29 +35,32 @@ def set_guess_word():
 
 
 def playing(guessWord, dispWord, alreadySaid):
-    while dispWord != guessWord:
-        playerSaid = input("Guess a letter: ")
+    try:
+        while dispWord != guessWord:
+            playerSaid = input("Guess a letter: ")
 
-        if playerSaid.lower() not in alreadySaid:
-            alreadySaid = alreadySaid + playerSaid
+            if playerSaid.lower() not in alreadySaid:
+                alreadySaid = alreadySaid + playerSaid
+            else:
+                print("You already used that letter")
+
+            if playerSaid.lower() in guessWord:
+                dispWord = [
+                    char if char == playerSaid or
+                    char in alreadySaid else "-" for char in guessWord]
+                dispWord = "".join(dispWord)
+            else:
+                print("Not in word.")
+
+            print(dispWord)
+            print("Letters Used: {}".format(alreadySaid))
+            playing(guessWord, dispWord, alreadySaid)
+            print(dispWord == guessWord)
         else:
-            print("You already used that letter")
-
-        if playerSaid.lower() in guessWord:
-            dispWord = [
-                char if char == playerSaid or
-                char in alreadySaid else "-" for char in guessWord]
-            dispWord = "".join(dispWord)
-        else:
-            print("Not in word.")
-
-        print(dispWord)
-        print("Letters Used: {}".format(alreadySaid))
-        playing(guessWord, dispWord, alreadySaid)
-        print(dispWord == guessWord)
-    else:
-        print("You win!")
-        return dispWord
+            print("You win!")
+            return dispWord
+    except KeyboardInterrupt:
+        raise
 
 
 if __name__ == '__main__':
